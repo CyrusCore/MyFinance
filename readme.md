@@ -7,10 +7,6 @@
 
 Aplikasi pelacak keuangan pribadi *full-stack* modern yang dibangun dengan backend Go (Golang) yang aman dan frontend React (Vite) yang reaktif. Didesain untuk kecepatan, keamanan *multi-tenant*, dan pengalaman pengguna *real-time* menggunakan TanStack Query.
 
-**Catatan:** *Ganti gambar di bawah ini dengan tangkapan layar (screenshot) aplikasi Anda!*
-
-![Finance Tracker Dashboard](https://i.imgur.com/example.png)
-
 ---
 
 ## ✨ Fitur Utama
