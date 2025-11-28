@@ -74,7 +74,7 @@ Proyek ini adalah *monorepo* (dalam satu folder) tetapi dijalankan sebagai dua l
 1.  **Clone Repositori:**
     ```bash
     git clone https://github.com/CyrusCore/MyFinance.git
-    cd nama-repo-anda
+    cd MyFinance
     ```
 
 2.  **Konfigurasi Backend:**
