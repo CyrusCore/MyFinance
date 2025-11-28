@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* vvvv TAMBAHKAN INI vvvv */
+@layer base {
+  body {
+    @apply bg-gray-100;
+  }
+}
+/* ^^^^ TAMBAHKAN INI ^^^^ */
+
+@layer utilities {
+  /* Sembunyikan scrollbar untuk Chrome, Safari, dan Edge */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Sembunyikan scrollbar untuk IE, Edge, dan Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE dan Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sembunyikan scrollbar untuk Firefox */
+.no-scrollbar {
+  scrollbar-width: none;
+}

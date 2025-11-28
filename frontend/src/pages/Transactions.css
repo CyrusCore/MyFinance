@@ -1,0 +1,33 @@
+/* src/pages/Transactions.css */
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.transactions-table th,
+.transactions-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.transactions-table th {
+  background-color: #f4f4f4;
+}
+
+.type-income {
+  color: green;
+  font-weight: bold;
+}
+.type-expense {
+  color: red;
+  font-weight: bold;
+}
+
+.amount-income {
+  color: green;
+}
+.amount-expense {
+  color: red;
+}

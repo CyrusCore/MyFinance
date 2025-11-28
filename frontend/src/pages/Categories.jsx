@@ -1,0 +1,137 @@
+// src/pages/Categories.jsx
+
+import React, { useState, useEffect, useCallback } from 'react';
+import apiClient from '../api';
+import toast from 'react-hot-toast'; // <-- Kita akan gunakan toast
+
+// --- Helper class untuk form (agar konsisten) ---
+const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500";
+const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+// ---
+
+const Categories = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // State untuk form tambah baru
+  const [newName, setNewName] = useState('');
+
+  // Buat fungsi fetch yang bisa dipanggil ulang
+  const fetchCategories = useCallback(() => {
+    setLoading(true);
+    apiClient.get('/categories')
+      .then(response => {
+        setCategories(response.data || []);
+        setError(null);
+      })
+      .catch(err => {
+        setError('Gagal memuat kategori');
+        toast.error('Gagal memuat kategori.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // Ambil data saat komponen dimuat
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  // Handle submit form
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (newName.trim() === '') {
+      toast.error('Nama kategori tidak boleh kosong');
+      return;
+    }
+
+    const promise = apiClient.post('/categories', { name: newName });
+
+    toast.promise(
+      promise,
+      {
+        loading: 'Menyimpan kategori...',
+        success: (response) => {
+          setNewName(''); // Kosongkan input
+          fetchCategories(); // Ambil ulang daftar kategori
+          return `Kategori "${response.data.name}" berhasil ditambahkan!`;
+        },
+        error: (err) => {
+          if (err.response && err.response.status === 409) {
+            return 'Nama kategori sudah ada';
+          }
+          return 'Gagal menambahkan kategori';
+        }
+      }
+    );
+  };
+
+  return (
+    <div>
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        Kelola Kategori
+      </h2>
+
+      {/* Layout Grid 2-kolom */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Kolom 1: Daftar Kategori */}
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Daftar Kategori</h3>
+          {loading && <p className="text-center text-gray-500">Loading...</p>}
+          {error && !loading && (
+             <p className="text-center text-red-500">{error}</p>
+          )}
+          {!loading && !error && (
+            <ul className="divide-y divide-gray-200">
+              {categories.length === 0 ? (
+                <li className="py-3 text-gray-500">Belum ada kategori.</li>
+              ) : (
+                categories.map(cat => (
+                  <li key={cat.id} className="py-3 font-medium text-gray-700">
+                    {cat.name}
+                  </li>
+                  // Nanti di sini kita bisa tambahkan tombol Edit/Delete
+                ))
+              )}
+            </ul>
+          )}
+        </div>
+
+        {/* Kolom 2: Form Tambah Kategori */}
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Tambah Kategori Baru</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="categoryName" className={labelClass}>
+                  Nama Kategori Baru
+                </label>
+                <input
+                  id="categoryName"
+                  type="text"
+                  value={newName}
+                  onChange={(e) => setNewName(e.g.value)}
+                  placeholder="Contoh: Investasi"
+                  className={inputClass}
+                />
+              </div>
+              
+              <button 
+                type="submit"
+                className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 shadow-md transition-colors"
+              >
+                Tambah Kategori
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Categories;
