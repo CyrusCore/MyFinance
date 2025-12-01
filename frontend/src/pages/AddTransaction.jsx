@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../api';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast'; 
+import toast from 'react-hot-toast';
 import { useAccounts } from '../context/AccountsContext'; // Import hook context
 
 // Helper class
-const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed";
-const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800";
+const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
@@ -37,7 +37,7 @@ const AddTransaction = () => {
   // State untuk data
   const [categories, setCategories] = useState([]);
   const { accounts, loadingAccounts } = useAccounts(); // State akun dari context
-  
+
   // State untuk loading
   const [loadingCategories, setLoadingCategories] = useState(true);
   const { refreshAccounts } = useAccounts();
@@ -73,7 +73,7 @@ const AddTransaction = () => {
       if (accounts.length > 0) {
         // Set akun default HANYA jika belum ada yang dipilih
         if (accountID === '') {
-          setAccountID(accounts[0].id); 
+          setAccountID(accounts[0].id);
         }
       } else {
         // Jika tidak ada akun, paksa pengguna membuatnya
@@ -82,7 +82,7 @@ const AddTransaction = () => {
       }
     }
   }, [accounts, loadingAccounts, accountID, navigate]);
-  
+
   // 3. Tentukan status loading gabungan
   const isDataLoading = loadingCategories || loadingAccounts;
 
@@ -114,19 +114,19 @@ const AddTransaction = () => {
     const transactionData = {
       amount: amountInCents, // <-- Kirim jumlah 'sen'
       type: type,
-      category: type === 'income' ? 'Income' : category, 
+      category: type === 'income' ? 'Income' : category,
       description: description,
       date: new Date(date).toISOString(),
-      account_id: parseInt(accountID, 10), 
+      account_id: parseInt(accountID, 10),
     };
-    
+
     const promise = apiClient.post('/transactions', transactionData);
-    
+
     toast.promise(promise, {
       loading: 'Menyimpan transaksi...',
       success: () => {
         navigate('/');
-        refreshAccounts(); 
+        refreshAccounts();
         return 'Transaksi berhasil disimpan!';
       },
       error: (err) => `Gagal menyimpan: ${err.response?.data?.error || err.message}`,
@@ -135,19 +135,19 @@ const AddTransaction = () => {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+      <h2 className="hidden md:block text-3xl font-bold text-gray-800 dark:text-white mb-6">
         Tambah Transaksi Baru
       </h2>
-      <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg mt-12 md:mt-0">
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             {/* --- Field Akun --- */}
             <div>
               <label htmlFor="account" className={labelClass}>Akun</label>
-              <select 
+              <select
                 id="account"
-                value={accountID} 
+                value={accountID}
                 onChange={(e) => setAccountID(e.target.value)}
                 className={inputClass}
                 required
@@ -167,10 +167,10 @@ const AddTransaction = () => {
             {/* --- Field Tipe --- */}
             <div>
               <label htmlFor="type" className={labelClass}>Tipe Transaksi</label>
-              <select 
-                id="type" 
-                value={type} 
-                onChange={(e) => setType(e.target.value)} 
+              <select
+                id="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
                 className={inputClass}
                 disabled={isDataLoading}
               >
@@ -178,19 +178,19 @@ const AddTransaction = () => {
                 <option value="income">Pemasukan</option>
               </select>
             </div>
-            
+
             {/* --- Field Jumlah --- */}
             <div>
               <label htmlFor="amount" className={labelClass}>Jumlah (Rp)</label>
-              <input 
-                id="amount" 
+              <input
+                id="amount"
                 type="text" // <-- Ganti ke "text"
                 inputMode="numeric" // <-- (Opsional: keyboard HP jadi angka)
-                value={amount} 
+                value={amount}
                 onChange={handleAmountChange} // <-- Panggil fungsi format
-                className={inputClass} 
-                placeholder="0" 
-                required 
+                className={inputClass}
+                placeholder="0"
+                required
                 disabled={isDataLoading}
               />
             </div>
@@ -198,13 +198,13 @@ const AddTransaction = () => {
             {/* --- Field Tanggal --- */}
             <div>
               <label htmlFor="date" className={labelClass}>Tanggal</label>
-              <input 
-                id="date" 
-                type="date" 
-                value={date} 
-                onChange={(e) => setDate(e.target.value)} 
-                className={inputClass} 
-                required 
+              <input
+                id="date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className={inputClass}
+                required
                 disabled={isDataLoading}
               />
             </div>
@@ -212,7 +212,7 @@ const AddTransaction = () => {
             {/* --- Field Kategori --- */}
             <div>
               <label htmlFor="category" className={labelClass}>Kategori</label>
-              <select 
+              <select
                 id="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -229,9 +229,9 @@ const AddTransaction = () => {
             {/* --- Field Deskripsi --- */}
             <div>
               <label htmlFor="description" className={labelClass}>Deskripsi (Opsional)</label>
-              <input 
+              <input
                 id="description"
-                type="text" 
+                type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className={inputClass}
@@ -242,8 +242,8 @@ const AddTransaction = () => {
 
             {/* --- Tombol Simpan --- */}
             <div className="md:col-span-2">
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 shadow-md transition-colors
                            disabled:bg-gray-400 disabled:cursor-not-allowed" // Style saat nonaktif
                 disabled={isDataLoading} // <-- NONAKTIFKAN SAAT LOADING

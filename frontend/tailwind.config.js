@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}", // Pindai semua file React
   ],
+  darkMode: 'class', // Enable dark mode manually
   theme: {
     extend: {},
   },

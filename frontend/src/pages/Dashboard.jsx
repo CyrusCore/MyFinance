@@ -18,9 +18,9 @@ const formatCurrency = (amount) => {
 };
 
 const SummaryCard = ({ title, amount, colorClass }) => (
-  <div className="bg-white p-6 rounded-xl shadow-md">
-    <h3 className="text-sm font-medium text-gray-500">{title}</h3>
-    <p className={`text-3xl font-bold mt-2 ${colorClass}`}>
+  <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-md">
+    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</h3>
+    <p className={`text-2xl md:text-3xl font-bold mt-2 ${colorClass}`}>
       {formatCurrency(amount)}
     </p>
   </div>
@@ -41,17 +41,17 @@ const Dashboard = () => {
   const [categorySummary, setCategorySummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [startDate, setStartDate] = useState(getStartOfMonth()); 
-  const [endDate, setEndDate] = useState(getEndOfMonth());      
+  const [startDate, setStartDate] = useState(getStartOfMonth());
+  const [endDate, setEndDate] = useState(getEndOfMonth());
   const { accounts: allAccounts, fetchAccounts, loadingAccounts } = useAccounts();
   const [selectedAccountID, setSelectedAccountID] = useState('all');
-   // 'all' atau ID (misal: '1')
+  // 'all' atau ID (misal: '1')
 
-const fetchData = useCallback(() => {
-    if (!startDate || !endDate) return; 
-    setLoading(true); 
+  const fetchData = useCallback(() => {
+    if (!startDate || !endDate) return;
+    setLoading(true);
 
-  
+
     let summaryParams = `?start=${startDate}&end=${endDate}`;
     if (selectedAccountID !== 'all') {
       summaryParams += `&account_id=${selectedAccountID}`;
@@ -74,18 +74,18 @@ const fetchData = useCallback(() => {
       .finally(() => {
         setLoading(false);
       });
-  // Dependensi 'fetchData' sekarang adalah 'selectedAccountID'
+    // Dependensi 'fetchData' sekarang adalah 'selectedAccountID'
   }, [startDate, endDate, selectedAccountID]); // <-- DIMODIFIKASI
 
 
   useEffect(() => {
-    fetchData(); 
-    const intervalId = setInterval(fetchData, 30000); 
-    
-    return () => clearInterval(intervalId);
-  }, [fetchData]); 
+    fetchData();
+    const intervalId = setInterval(fetchData, 30000);
 
-const totalNetBalance = useMemo(() => {
+    return () => clearInterval(intervalId);
+  }, [fetchData]);
+
+  const totalNetBalance = useMemo(() => {
     if (selectedAccountID === 'all') {
       return allAccounts.reduce((sum, acc) => sum + acc.current_balance, 0);
     } else {
@@ -93,7 +93,7 @@ const totalNetBalance = useMemo(() => {
       return selectedAcc ? selectedAcc.current_balance : 0;
     }
   }, [allAccounts, selectedAccountID]);
-  
+
   const incomeExpenseData = {
     labels: ['Total Pemasukan', 'Total Pengeluaran'],
     datasets: [
@@ -134,10 +134,10 @@ const totalNetBalance = useMemo(() => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top' },
+      legend: { position: 'top', labels: { color: document.documentElement.classList.contains('dark') ? '#fff' : '#666' } },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             let label = context.label || '';
             if (label) { label += ': '; }
             if (context.parsed !== null) {
@@ -159,19 +159,19 @@ const totalNetBalance = useMemo(() => {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
-      <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">Filter Laporan</h3>
+      <h2 className="hidden md:block text-3xl font-bold text-gray-800 dark:text-white mb-6">Dashboard</h2>
+      <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md mt-12 md:mt-0">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Filter Laporan</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
+
           {/* Filter Akun (BARU) */}
           <div>
-            <label htmlFor="accountFilter" className="block text-sm font-medium text-gray-600">Akun</label>
+            <label htmlFor="accountFilter" className="block text-sm font-medium text-gray-600 dark:text-gray-400">Akun</label>
             <select
               id="accountFilter"
               value={selectedAccountID}
               onChange={(e) => setSelectedAccountID(e.target.value)}
-              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             >
               <option value="all">Semua Akun</option>
               {allAccounts.map(acc => (
@@ -182,32 +182,32 @@ const totalNetBalance = useMemo(() => {
             </select>
           </div>
           <div>
-            <label htmlFor="startDate" className="block text-sm font-medium text-gray-600">Tanggal Mulai</label>
+            <label htmlFor="startDate" className="block text-sm font-medium text-gray-600 dark:text-gray-400">Tanggal Mulai</label>
             <input
               type="date"
               id="startDate"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div>
-            <label htmlFor="endDate" className="block text-sm font-medium text-gray-600">Tanggal Selesai</label>
+            <label htmlFor="endDate" className="block text-sm font-medium text-gray-600 dark:text-gray-400">Tanggal Selesai</label>
             <input
               type="date"
               id="endDate"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
         </div>
       </div>
-      <h3 className="text-xl font-semibold text-gray-700 mb-4">
+      <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">
         Laporan untuk {formatDateForTitle(startDate)} - {formatDateForTitle(endDate)}
       </h3>
 
-      {loading && <div className="text-center text-gray-500">Memuat data...</div>}
+      {loading && <div className="text-center text-gray-500 dark:text-gray-400">Memuat data...</div>}
       {error && !loading && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
           <strong className="font-bold">Error:</strong> {error}
@@ -219,29 +219,29 @@ const totalNetBalance = useMemo(() => {
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* ... (3 SummaryCard Anda tetap di sini) ... */}
-            <SummaryCard 
-              title="Total Pemasukan" 
-              amount={summary.total_income} 
-              colorClass="text-green-600" 
+            <SummaryCard
+              title="Total Pemasukan"
+              amount={summary.total_income}
+              colorClass="text-green-600"
             />
-            <SummaryCard 
-              title="Total Pengeluaran" 
-              amount={summary.total_expense} 
+            <SummaryCard
+              title="Total Pengeluaran"
+              amount={summary.total_expense}
               colorClass="text-red-600"
             />
-            <SummaryCard 
-              title="Saldo Bersih" 
-              amount={summary.net_balance} 
+            <SummaryCard
+              title="Saldo Bersih"
+              amount={summary.net_balance}
               colorClass={summary.net_balance >= 0 ? "text-blue-700" : "text-red-600"}
             />
           </div>
 
           {/* 5. BUAT LAYOUT 2-KOLOM UNTUK CHARTS */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-            
+
             {/* Chart 1: Pengeluaran per Kategori */}
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-700 mb-4">Pengeluaran per Kategori</h3>
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg">
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Pengeluaran per Kategori</h3>
               <div className="relative" style={{ height: '350px' }}>
                 {categorySummary && categorySummary.length > 0 ? (
                   <Pie data={categoryChartData} options={chartOptions} />
@@ -252,8 +252,8 @@ const totalNetBalance = useMemo(() => {
             </div>
 
             {/* Chart 2: Pemasukan vs Pengeluaran */}
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-700 mb-4">Pemasukan vs Pengeluaran</h3>
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg">
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Pemasukan vs Pengeluaran</h3>
               <div className="relative" style={{ height: '350px' }}>
                 <Doughnut data={incomeExpenseData} options={chartOptions} />
               </div>

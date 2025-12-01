@@ -7,21 +7,24 @@ import './index.css';
 import { Toaster } from 'react-hot-toast';
 import { AccountsProvider } from './context/AccountsContext';
 import { AuthProvider } from './context/AuthContext.jsx'; // Hapus/sesuaikan CSS default jika perlu
+import { ThemeProvider } from './context/ThemeContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <AccountsProvider>
-          <App />
-          <Toaster position="top-right" />
-        </AccountsProvider> 
-      </AuthProvider> 
+          <ThemeProvider>
+            <App />
+            <Toaster position="top-right" />
+          </ThemeProvider>
+        </AccountsProvider>
+      </AuthProvider>
     </QueryClientProvider>
-    </BrowserRouter>
+  </BrowserRouter>
   // </React.StrictMode>
 );

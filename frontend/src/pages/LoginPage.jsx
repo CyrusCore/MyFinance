@@ -1,13 +1,14 @@
 // src/pages/LoginPage.jsx
+// src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import apiClient from '../api';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// (Helper class bisa Anda tambahkan)
-const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500";
-const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+// Standard styling
+const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white";
+const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // Nanti kita akan simpan token ke Context, untuk sekarang simpan ke local storage
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -29,9 +29,7 @@ const LoginPage = () => {
     toast.promise(promise, {
       loading: 'Logging in...',
       success: (res) => {
-        // SIMPAN TOKEN
         login(res.data.token);
-        
         navigate('/'); // Redirect ke Dashboard
         setLoading(false);
         return 'Login successful!';
@@ -44,9 +42,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800">Login</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Login</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Selamat datang kembali!</p>
+        </div>
+
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label htmlFor="email" className={labelClass}>Email</label>
@@ -57,6 +59,7 @@ const LoginPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               className={inputClass}
               required
+              placeholder="nama@email.com"
             />
           </div>
           <div>
@@ -68,6 +71,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className={inputClass}
               required
+              placeholder="••••••••"
             />
           </div>
           <button
@@ -75,12 +79,12 @@ const LoginPage = () => {
             disabled={loading}
             className="w-full px-4 py-3 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
           >
-            {loading ? 'Loading...' : 'Login'}
+            {loading ? 'Memproses...' : 'Login'}
           </button>
         </form>
-        <p className="text-sm text-center text-gray-600">
+        <p className="text-sm text-center text-gray-600 dark:text-gray-400">
           Belum punya akun?{' '}
-          <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
             Daftar di sini
           </Link>
         </p>

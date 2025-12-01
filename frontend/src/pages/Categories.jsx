@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api';
-import toast from 'react-hot-toast'; // <-- Kita akan gunakan toast
+import toast from 'react-hot-toast';
 
 // --- Helper class untuk form (agar konsisten) ---
-const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500";
-const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white";
+const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 // ---
 
 const Categories = () => {
@@ -71,27 +71,27 @@ const Categories = () => {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+      <h2 className="hidden md:block text-3xl font-bold text-gray-800 dark:text-white mb-6">
         Kelola Kategori
       </h2>
 
       {/* Layout Grid 2-kolom */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 md:mt-0">
+
         {/* Kolom 1: Daftar Kategori */}
-        <div className="bg-white p-6 rounded-xl shadow-lg">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4">Daftar Kategori</h3>
-          {loading && <p className="text-center text-gray-500">Loading...</p>}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Daftar Kategori</h3>
+          {loading && <p className="text-center text-gray-500 dark:text-gray-400">Loading...</p>}
           {error && !loading && (
-             <p className="text-center text-red-500">{error}</p>
+            <p className="text-center text-red-500">{error}</p>
           )}
           {!loading && !error && (
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {categories.length === 0 ? (
-                <li className="py-3 text-gray-500">Belum ada kategori.</li>
+                <li className="py-3 text-gray-500 dark:text-gray-400">Belum ada kategori.</li>
               ) : (
                 categories.map(cat => (
-                  <li key={cat.id} className="py-3 font-medium text-gray-700">
+                  <li key={cat.id} className="py-3 font-medium text-gray-700 dark:text-gray-300">
                     {cat.name}
                   </li>
                   // Nanti di sini kita bisa tambahkan tombol Edit/Delete
@@ -102,8 +102,8 @@ const Categories = () => {
         </div>
 
         {/* Kolom 2: Form Tambah Kategori */}
-        <div className="bg-white p-6 rounded-xl shadow-lg">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4">Tambah Kategori Baru</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Tambah Kategori Baru</h3>
           <form onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
@@ -114,13 +114,13 @@ const Categories = () => {
                   id="categoryName"
                   type="text"
                   value={newName}
-                  onChange={(e) => setNewName(e.g.value)}
+                  onChange={(e) => setNewName(e.target.value)}
                   placeholder="Contoh: Investasi"
                   className={inputClass}
                 />
               </div>
-              
-              <button 
+
+              <button
                 type="submit"
                 className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 shadow-md transition-colors"
               >
