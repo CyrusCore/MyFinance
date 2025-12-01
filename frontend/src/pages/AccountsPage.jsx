@@ -1,16 +1,16 @@
-// src/pages/AccountsPage.jsx
+
 
 import React, { useState } from 'react';
 import apiClient from '../api';
 import toast from 'react-hot-toast';
 import { useAccounts } from '../context/AccountsContext';
 
-// Helper class
+
 const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount / 100);
 
-// --- Form untuk Akun Baru ---
+
 const AddAccountForm = ({ onSuccess }) => {
   const [name, setName] = useState('');
   const [type, setType] = useState('bank');
@@ -22,7 +22,7 @@ const AddAccountForm = ({ onSuccess }) => {
     e.preventDefault();
     setLoading(true);
 
-    // Konversi ke 'sen'
+
     const balanceInCents = Math.round(parseFloat(initialBalance) * 100);
 
     try {
@@ -97,9 +97,9 @@ const AddAccountForm = ({ onSuccess }) => {
   );
 };
 
-// --- Halaman Utama Akun ---
+
 const AccountsPage = () => {
-  // Ambil state dari context
+
   const { accounts, fetchAccounts, loadingAccounts } = useAccounts();
 
   if (loadingAccounts) return <p className="text-center dark:text-gray-300">Loading...</p>;
@@ -110,12 +110,12 @@ const AccountsPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* Kolom Form */}
+
         <div className="lg:col-span-1">
           <AddAccountForm onSuccess={fetchAccounts} />
         </div>
 
-        {/* Kolom Daftar Akun */}
+
         <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
           <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Daftar Akun Anda</h3>
           <div className="space-y-4">

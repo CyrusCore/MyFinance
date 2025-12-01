@@ -24,7 +24,8 @@ Aplikasi pelacak keuangan pribadi *full-stack* modern yang dibangun dengan backe
 * **📈 Laporan & Utilitas:**
     * **Pagination:** Daftar transaksi dimuat per halaman untuk performa cepat.
     * **Ekspor CSV:** Unduh seluruh riwayat transaksi Anda kapan saja.
-* **🎨 UI Modern:** Dibangun dengan **Tailwind CSS**, *layout* *sidebar* yang *sticky*, dan notifikasi *toast* untuk setiap aksi.
+* **🎨 UI Modern & Responsif:** Dibangun dengan **Tailwind CSS**, *layout* yang adaptif untuk *mobile* & *desktop*, serta notifikasi *toast* interaktif.
+* **🌙 Dark Mode:** Dukungan tema gelap penuh yang terintegrasi di seluruh aplikasi untuk kenyamanan mata.
 
 ---
 

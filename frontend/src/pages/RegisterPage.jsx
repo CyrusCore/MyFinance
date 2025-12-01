@@ -1,10 +1,10 @@
-// src/pages/RegisterPage.jsx
+
 import React, { useState } from 'react';
 import apiClient from '../api';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
-// Standard styling
+
 const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 

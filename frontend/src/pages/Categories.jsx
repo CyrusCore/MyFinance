@@ -1,10 +1,10 @@
-// src/pages/Categories.jsx
+
 
 import React, { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api';
 import toast from 'react-hot-toast';
 
-// --- Helper class untuk form (agar konsisten) ---
+
 const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 // ---
@@ -14,10 +14,10 @@ const Categories = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // State untuk form tambah baru
+
   const [newName, setNewName] = useState('');
 
-  // Buat fungsi fetch yang bisa dipanggil ulang
+
   const fetchCategories = useCallback(() => {
     setLoading(true);
     apiClient.get('/categories')
@@ -34,12 +34,12 @@ const Categories = () => {
       });
   }, []);
 
-  // Ambil data saat komponen dimuat
+
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
 
-  // Handle submit form
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -75,10 +75,10 @@ const Categories = () => {
         Kelola Kategori
       </h2>
 
-      {/* Layout Grid 2-kolom */}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 md:mt-0">
 
-        {/* Kolom 1: Daftar Kategori */}
+
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
           <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Daftar Kategori</h3>
           {loading && <p className="text-center text-gray-500 dark:text-gray-400">Loading...</p>}
@@ -101,7 +101,7 @@ const Categories = () => {
           )}
         </div>
 
-        {/* Kolom 2: Form Tambah Kategori */}
+
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
           <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Tambah Kategori Baru</h3>
           <form onSubmit={handleSubmit}>

@@ -17,7 +17,6 @@ import (
 
 func runCronJob(store *api.Store) {
 	log.Println("Running recurring transactions worker...")
-	// Gunakan context.Background() untuk proses background
 	count, err := store.ProcessRecurringTransactions(context.Background())
 	if err != nil {
 		log.Printf("Error processing recurring transactions: %v", err)
@@ -34,7 +33,6 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 func main() {
-	// 1. Load file .env
 	if err := godotenv.Load(); err != nil {
 		log.Println("Warning: Could not load .env file")
 	}
@@ -42,30 +40,20 @@ func main() {
 	if connStr == "" {
 		log.Fatal("DB_URL is not set")
 	}
-	jwtSecret := os.Getenv("JWT_SECRET") // <-- BACA SECRET
+	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
 		log.Fatal("JWT_SECRET is not set")
 	}
-	// --- PERBAIKAN DIMULAI DARI SINI ---
-
-	// 1. Parse config dari URL
 	config, err := pgxpool.ParseConfig(connStr)
 	if err != nil {
 		log.Fatalf("Unable to parse database config: %v\n", err)
 	}
-
-	// 2. (INI ADALAH PERBAIKANNYA)
-	// Nonaktifkan 'prepared statement' otomatis di level pool
-	// Ini mencegah error "prepared statement name is already in use"
 	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
-
-	// 3. Buat pool koneksi menggunakan config yang sudah diubah
 	pool, err := pgxpool.NewWithConfig(context.Background(), config)
 	if err != nil {
 		log.Fatalf("Unable to connect to database with new config: %v\n", err)
 	}
 	defer pool.Close()
-	// 3. Inisialisasi Store (logika DB)
 	store := api.NewStore(pool, jwtSecret)
 
 	cr := cron.New()
@@ -73,10 +61,8 @@ func main() {
 	cr.Start()
 	log.Println("Cron job for recurring transactions started. Will run at 1:00 AM.")
 
-	// 4. Setup Router (mux)
 	r := mux.NewRouter()
 
-	// Buat sub-router untuk /api
 	apiRouter := r.PathPrefix("/api").Subrouter()
 	apiRouter.HandleFunc("/transactions", store.HandleGetTransactions).Methods("GET")
 	apiRouter.HandleFunc("/transactions", store.CreateTransactionHandler).Methods("POST")
@@ -108,14 +94,13 @@ func main() {
 	apiRouter.HandleFunc("/auth/login", store.HandleLogin).Methods("POST")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"}, // <-- Alamat frontend React Anda
+		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders: []string{"Content-Type", "Authorization"},
 	})
 	loggedRouter := loggingMiddleware(r)
 	handler := c.Handler(loggedRouter)
 
-	// 5. Jalankan Server
 	port := ":8080"
 	log.Printf("Starting server on port %s", port)
 	if err := http.ListenAndServe(port, handler); err != nil {

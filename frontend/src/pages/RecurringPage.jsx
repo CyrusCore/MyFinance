@@ -1,16 +1,16 @@
-// src/pages/RecurringPage.jsx
+
 import React, { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api';
 import toast from 'react-hot-toast';
 import { MdDelete } from 'react-icons/md';
 
-// Helper class
+
 const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount / 100);
 const formatDate = (dateString) => new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
 
-// --- Bagian 1: Form untuk menambah jadwal ---
+
 const AddRecurringForm = ({ categories, onSuccess }) => {
   const [type, setType] = useState('expense');
   const [amount, setAmount] = useState('');
@@ -50,7 +50,7 @@ const AddRecurringForm = ({ categories, onSuccess }) => {
     <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
       <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Tambah Transaksi Berulang</h3>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Kolom 1 */}
+
         <div>
           <label className={labelClass}>Tipe</label>
           <select value={type} onChange={(e) => setType(e.target.value)} className={inputClass}>
@@ -73,7 +73,7 @@ const AddRecurringForm = ({ categories, onSuccess }) => {
           <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className={inputClass} placeholder="Contoh: Tagihan Listrik" />
         </div>
 
-        {/* Kolom 2 */}
+
         <div>
           <label className={labelClass}>Frekuensi</label>
           <select value={frequency} onChange={(e) => setFrequency(e.target.value)} className={inputClass}>
@@ -103,7 +103,7 @@ const AddRecurringForm = ({ categories, onSuccess }) => {
 };
 
 
-// --- Bagian 2: Halaman Utama (menggabungkan form & daftar) ---
+
 const RecurringPage = () => {
   const [categories, setCategories] = useState([]);
   const [recurringTxs, setRecurringTxs] = useState([]);
@@ -148,12 +148,12 @@ const RecurringPage = () => {
       <h2 className="hidden md:block text-3xl font-bold text-gray-800 dark:text-white mb-6">Transaksi Berulang</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12 md:mt-0">
-        {/* Kolom Form */}
+
         <div className="lg:col-span-1">
           <AddRecurringForm categories={categories} onSuccess={fetchData} />
         </div>
 
-        {/* Kolom Daftar */}
+
         <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
           <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Jadwal Aktif</h3>
           <div className="space-y-4">

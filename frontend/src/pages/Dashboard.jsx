@@ -1,15 +1,15 @@
-// src/pages/Dashboard.jsx
+
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import apiClient from '../api';
 import { useAccounts } from '../context/AccountsContext';
-// 1. IMPORT PIE CHART
+
 import { Doughnut, Pie } from 'react-chartjs-2'; // <-- Tambahkan Pie
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// ... (Helper formatCurrency dan SummaryCard tetap sama) ...
+
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -45,7 +45,7 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState(getEndOfMonth());
   const { accounts: allAccounts, fetchAccounts, loadingAccounts } = useAccounts();
   const [selectedAccountID, setSelectedAccountID] = useState('all');
-  // 'all' atau ID (misal: '1')
+
 
   const fetchData = useCallback(() => {
     if (!startDate || !endDate) return;
@@ -57,9 +57,9 @@ const Dashboard = () => {
       summaryParams += `&account_id=${selectedAccountID}`;
     }
 
-    // 2. Ambil summary (income/expense)
+
     const summaryPromise = apiClient.get(`/summary${summaryParams}`);
-    // 3. Ambil summary kategori
+
     const categoryPromise = apiClient.get(`/summary/categories${summaryParams}`);
 
     Promise.all([summaryPromise, categoryPromise])
@@ -74,7 +74,7 @@ const Dashboard = () => {
       .finally(() => {
         setLoading(false);
       });
-    // Dependensi 'fetchData' sekarang adalah 'selectedAccountID'
+
   }, [startDate, endDate, selectedAccountID]); // <-- DIMODIFIKASI
 
 
@@ -106,14 +106,14 @@ const Dashboard = () => {
     ],
   };
 
-  // Data untuk Pie (Expense by Category)
+
   const categoryChartData = {
-    // Ambil labels (nama kategori) dari data API
+
     labels: categorySummary?.map(item => item.category) || [],
     datasets: [
       {
         data: categorySummary?.map(item => item.total_amount / 100) || [],
-        // Sediakan daftar warna yang lebih banyak untuk Pie Chart
+
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
           'rgba(54, 162, 235, 0.8)',
@@ -129,7 +129,7 @@ const Dashboard = () => {
     ],
   };
 
-  // Opsi chart (bisa dipakai untuk keduanya)
+
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -164,7 +164,7 @@ const Dashboard = () => {
         <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Filter Laporan</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          {/* Filter Akun (BARU) */}
+
           <div>
             <label htmlFor="accountFilter" className="block text-sm font-medium text-gray-600 dark:text-gray-400">Akun</label>
             <select
@@ -216,9 +216,9 @@ const Dashboard = () => {
 
       {!loading && !error && summary && (
         <>
-          {/* Summary Cards */}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* ... (3 SummaryCard Anda tetap di sini) ... */}
+
             <SummaryCard
               title="Total Pemasukan"
               amount={summary.total_income}
@@ -236,10 +236,10 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* 5. BUAT LAYOUT 2-KOLOM UNTUK CHARTS */}
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
-            {/* Chart 1: Pengeluaran per Kategori */}
+
             <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg">
               <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Pengeluaran per Kategori</h3>
               <div className="relative" style={{ height: '350px' }}>
@@ -251,7 +251,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Chart 2: Pemasukan vs Pengeluaran */}
+
             <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg">
               <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Pemasukan vs Pengeluaran</h3>
               <div className="relative" style={{ height: '350px' }}>

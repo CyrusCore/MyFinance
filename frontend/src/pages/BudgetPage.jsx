@@ -1,9 +1,9 @@
-// src/pages/BudgetPage.jsx
+
 import React, { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api';
 import toast from 'react-hot-toast';
 
-// Helper format
+
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -11,7 +11,7 @@ const formatCurrency = (amount) => {
   }).format(amount / 100);
 };
 
-// Komponen Progress Bar
+
 const ProgressBar = ({ actual, budget }) => {
   if (budget === 0) return <div className="text-sm text-gray-500 dark:text-gray-400">Budget belum di-set</div>;
 
@@ -30,7 +30,7 @@ const ProgressBar = ({ actual, budget }) => {
   );
 };
 
-// Komponen untuk satu baris budget
+
 const BudgetRow = ({ category, actual, budget, onSave, month, year }) => {
   const [amount, setAmount] = useState(budget / 100); // Tampilkan dlm Rupiah
 
@@ -54,10 +54,10 @@ const BudgetRow = ({ category, actual, budget, onSave, month, year }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center p-4 border-b dark:border-gray-700">
-      {/* Nama Kategori */}
+
       <div className="md:col-span-1 font-semibold text-gray-800 dark:text-gray-200">{category}</div>
 
-      {/* Progress Bar & Info */}
+
       <div className="md:col-span-2">
         <ProgressBar actual={actual} budget={budget} />
         <div className="flex justify-between text-sm mt-1">
@@ -68,7 +68,7 @@ const BudgetRow = ({ category, actual, budget, onSave, month, year }) => {
         </div>
       </div>
 
-      {/* Input Budget */}
+
       <div className="md:col-span-2 flex gap-2">
         <input
           type="number"
@@ -94,7 +94,7 @@ const BudgetPage = () => {
   const [data, setData] = useState([]); // State gabungan
   const [loading, setLoading] = useState(true);
 
-  // State untuk filter bulan/tahun
+
   const [month, setMonth] = useState(new Date().getMonth() + 1); // 1-12
   const [year, setYear] = useState(new Date().getFullYear());
 
@@ -103,11 +103,11 @@ const BudgetPage = () => {
 
     const params = `?month=${month}&year=${year}`;
 
-    // 1. Ambil daftar kategori (dasar)
+
     const categoriesPromise = apiClient.get('/categories');
-    // 2. Ambil data budget (rencana)
+
     const budgetsPromise = apiClient.get(`/budgets${params}`);
-    // 3. Ambil data aktual (pengeluaran)
+
     const actualsPromise = apiClient.get(`/summary/categories${params}`);
 
     Promise.all([categoriesPromise, budgetsPromise, actualsPromise])
@@ -117,11 +117,11 @@ const BudgetPage = () => {
         const budgets = budRes.data;
         const actuals = actRes.data;
 
-        // Gabungkan 3 data ini
+
         const combinedData = categories.map(cat => {
-          // Cari budget untuk kategori ini
+
           const budget = budgets.find(b => b.category_name === cat.name);
-          // Cari pengeluaran untuk kategori ini
+
           const actual = actuals.find(a => a.category === cat.name);
 
           return {
@@ -151,7 +151,7 @@ const BudgetPage = () => {
         Anggaran (Budgeting)
       </h2>
 
-      {/* TODO: Tambahkan filter ganti bulan/tahun di sini */}
+
 
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg mt-12 md:mt-0">
         {loading ? (

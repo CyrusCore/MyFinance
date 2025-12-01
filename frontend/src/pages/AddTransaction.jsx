@@ -1,4 +1,4 @@
-// src/pages/AddTransaction.jsx
+
 
 import React, { useState, useEffect } from 'react';
 import apiClient from '../api';
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAccounts } from '../context/AccountsContext'; // Import hook context
 
-// Helper class
+
 const inputClass = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
@@ -17,7 +17,7 @@ const formatCurrency = (amount) => {
   }).format(amount / 100); // Dibagi 100 untuk mengubah sen ke Rupiah
 };
 const formatRupiah = (value) => {
-  // Helper untuk memformat angka (misal: 5000) menjadi string (misal: "5.000")
+
   if (!value) return '';
   // Hapus semua selain angka
   const cleanValue = value.toString().replace(/\D/g, '');
@@ -27,22 +27,22 @@ const formatRupiah = (value) => {
 };
 
 const parseRupiah = (formattedValue) => {
-  // Helper untuk mengubah string (misal: "5.000.000") menjadi angka (misal: 5000000)
+
   if (!formattedValue) return 0;
   // Hapus semua titik
   return parseInt(formattedValue.replace(/\./g, ''), 10) || 0;
 };
 
 const AddTransaction = () => {
-  // State untuk data
+
   const [categories, setCategories] = useState([]);
   const { accounts, loadingAccounts } = useAccounts(); // State akun dari context
 
-  // State untuk loading
+
   const [loadingCategories, setLoadingCategories] = useState(true);
   const { refreshAccounts } = useAccounts();
 
-  // State untuk form
+
   const [type, setType] = useState('expense');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -52,7 +52,7 @@ const AddTransaction = () => {
 
   const navigate = useNavigate();
 
-  // 1. Ambil daftar kategori saat komponen dimuat
+
   useEffect(() => {
     setLoadingCategories(true); // Mulai loading
     apiClient.get('/categories')
@@ -66,7 +66,7 @@ const AddTransaction = () => {
       .finally(() => setLoadingCategories(false)); // Selesai loading
   }, []); // Hanya jalan sekali
 
-  // 2. Efek untuk memantau data akun dari context
+
   useEffect(() => {
     // Jalankan hanya jika loading akun selesai
     if (!loadingAccounts) {
@@ -83,7 +83,7 @@ const AddTransaction = () => {
     }
   }, [accounts, loadingAccounts, accountID, navigate]);
 
-  // 3. Tentukan status loading gabungan
+
   const isDataLoading = loadingCategories || loadingAccounts;
 
   const handleAmountChange = (e) => {
@@ -95,7 +95,7 @@ const AddTransaction = () => {
     setAmount(formattedValue);
   };
 
-  // 4. Handle submit form
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const rupiahValue = parseRupiah(amount);
@@ -142,7 +142,7 @@ const AddTransaction = () => {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* --- Field Akun --- */}
+
             <div>
               <label htmlFor="account" className={labelClass}>Akun</label>
               <select
@@ -164,7 +164,7 @@ const AddTransaction = () => {
               </select>
             </div>
 
-            {/* --- Field Tipe --- */}
+
             <div>
               <label htmlFor="type" className={labelClass}>Tipe Transaksi</label>
               <select
@@ -179,7 +179,7 @@ const AddTransaction = () => {
               </select>
             </div>
 
-            {/* --- Field Jumlah --- */}
+
             <div>
               <label htmlFor="amount" className={labelClass}>Jumlah (Rp)</label>
               <input
@@ -195,7 +195,7 @@ const AddTransaction = () => {
               />
             </div>
 
-            {/* --- Field Tanggal --- */}
+
             <div>
               <label htmlFor="date" className={labelClass}>Tanggal</label>
               <input
@@ -209,7 +209,7 @@ const AddTransaction = () => {
               />
             </div>
 
-            {/* --- Field Kategori --- */}
+
             <div>
               <label htmlFor="category" className={labelClass}>Kategori</label>
               <select
@@ -226,7 +226,7 @@ const AddTransaction = () => {
               </select>
             </div>
 
-            {/* --- Field Deskripsi --- */}
+
             <div>
               <label htmlFor="description" className={labelClass}>Deskripsi (Opsional)</label>
               <input
@@ -240,7 +240,7 @@ const AddTransaction = () => {
               />
             </div>
 
-            {/* --- Tombol Simpan --- */}
+
             <div className="md:col-span-2">
               <button
                 type="submit"
